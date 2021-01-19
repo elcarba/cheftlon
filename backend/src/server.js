@@ -3,6 +3,7 @@ require('dotenv').config({
     path: path.resolve(__dirname, '../.env')
 });
 
+const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
@@ -16,8 +17,9 @@ if (process.env.NODE_ENV === 'development') {
 // Connect Database
 connectDB();
 
-// Init Middleware
-app.use(express.json());
+// Allow body params
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 // Define Routes
 app.use('/api', indexRoute);
