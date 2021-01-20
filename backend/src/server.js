@@ -6,6 +6,7 @@ require('dotenv').config({
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const indexRoute = require('./routes');
 const app = express();
@@ -20,6 +21,9 @@ connectDB();
 // Allow body params
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+// Allow cors
+app.use(cors());
 
 // Define Routes
 app.use('/api', indexRoute);
