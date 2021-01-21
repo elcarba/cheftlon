@@ -19,7 +19,9 @@ export default function RightMenu() {
         if (!currentUser) {
             history.push("/login")
         }
-    }, [currentUser]);
+
+        //Need history to be used without warnings. Instance
+    }, [history, currentUser]);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);

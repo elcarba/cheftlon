@@ -36,7 +36,9 @@ const Login = () => {
         if (currentUser) {
             history.push("/")
         }
-    }, [currentUser]);
+
+        //Need history to be used without warnings. Instance
+    }, [history, currentUser]);
 
     const submitHandler = (values) => {
         const { email, password } = values;

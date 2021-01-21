@@ -23,7 +23,7 @@ function NavigationItem({ title, href, icon }){
 
 NavigationItem.propTypes = {
     href: PropTypes.string,
-    icon: PropTypes.elementType,
+    icon: PropTypes.node,
     title: PropTypes.string
 };
 

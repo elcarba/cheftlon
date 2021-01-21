@@ -15,12 +15,14 @@ function Navigation({ items }){
     return(
         <List className={classes.list}>
             {
-                items.map((item) =>
-                    <NavigationItem
-                        title={item.title}
-                        href={item.href}
-                        icon={item.icon}
-                    />
+                items.map((item, i) =>
+                    <React.Fragment key={i}>
+                        <NavigationItem
+                            title={item.title}
+                            href={item.href}
+                            icon={item.icon}
+                        />
+                    </React.Fragment>
                 )
             }
         </List>
