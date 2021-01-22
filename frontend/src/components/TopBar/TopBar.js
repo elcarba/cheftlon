@@ -2,11 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '../Drawer/Drawer';
 import RightMenu from "./RightMenu/RightMenu";
+import Logo from "../../assets/images/logo.png";
+import {Avatar} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,9 +16,16 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
+  logoContainer: {
     flexGrow: 1,
   },
+  logo: {
+    padding: theme.spacing(0.3),
+    marginLeft: theme.spacing(-1),
+    backgroundColor: theme.palette.secondary.main,
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+  }
 }));
 
 function TopBar(){
@@ -42,9 +50,10 @@ function TopBar(){
             <MenuIcon />
           </IconButton>
 
-          <Typography variant="h6" className={classes.title}>
-            Cheftion!
-          </Typography>
+          <div className={classes.logoContainer}>
+            <Avatar src={Logo} alt="logo" className={classes.logo}/>
+          </div>
+
 
           <RightMenu/>
 

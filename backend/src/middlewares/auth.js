@@ -31,14 +31,14 @@ exports.protect = async (req, res, next) => {
 };
 
 exports.admin = async (req, res, next) => {
-    if (req.user.isAdmin) {
-        next();
+    if (!req.user.isAdmin) {
+        responseHandler(
+            res,
+            false,
+            401,
+            "Authorization denied, user does not have Admin role"
+        );
     }
 
-    responseHandler(
-        res,
-        false,
-        401,
-        "Authorization denied, user does not have Admin role"
-    );
+    next();
 };

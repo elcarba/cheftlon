@@ -4,7 +4,7 @@ import { CircularProgress, Grid } from "@material-ui/core";
 const Loader = () => {
     return (
         <Grid
-            style={{ height: "50vh", position: 'absolute' }}
+            style={{ height: "50vh", position: 'fixed' }}
             container
             justify="center"
             alignItems="center"

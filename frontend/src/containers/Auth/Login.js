@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {login} from "../../store/Auth/authActions";
 import UserForm from "../../components/UserForm/UserForm";
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {Container, Typography, Avatar, makeStyles} from '@material-ui/core';
 import Footer from "../../components/Footer/Footer";
+import Logo from "../../assets/images/logo.png";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    }
+    large: {
+        width: theme.spacing(12),
+        height: theme.spacing(12),
+    },
 }));
 
 const Login = () => {
@@ -48,11 +48,9 @@ const Login = () => {
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
+                <Avatar src={Logo} alt="logo" className={classes.large}/>
                 <Typography component="h1" variant="h5">
-                    Sign In
+                    <strong>Sign In</strong>
                 </Typography>
 
                 <UserForm
