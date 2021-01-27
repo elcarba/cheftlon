@@ -7,7 +7,7 @@ import Menu from "../../Menu/Menu";
 import { logout } from '../../../store/Auth/authActions';
 import Typography from "@material-ui/core/Typography";
 
-export default function RightMenu() {
+export default function AccountMenu() {
     const history = useHistory();
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -35,15 +35,22 @@ export default function RightMenu() {
         dispatch(logout());
     }
 
-    const menuItems = () => {
+    const goTo = (href) => {
+        history.push(href);
+
+        //Close Account Menu
+        handleClose();
+    };
+
+    const onMenuItems = () => {
         return [
             {
                 label: 'Profile',
-                action: () => history.push("/profile")
+                onAction: () => goTo("/profile")
             },
             {
                 label: 'Sign Out',
-                action: logoutHandler
+                onAction: logoutHandler
             }
         ];
     };
@@ -68,7 +75,7 @@ export default function RightMenu() {
                     isOpen={open}
                     anchorEl={anchorEl}
                     onCloseClick={handleClose}
-                    items={menuItems()}
+                    items={onMenuItems()}
                 />
             </>
         )

@@ -64,7 +64,7 @@ const Login = () => {
 
             </div>
 
-            <Footer/>
+            <Footer bgWhite />
         </Container>
     );
 };

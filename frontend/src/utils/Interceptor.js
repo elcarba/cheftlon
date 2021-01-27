@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { API_URL } from '../config/api';
-const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+import store from '../store/index';
+import { logout } from "../store/Auth/authActions";
+import { error as showError } from "../store/Alert/alertActions";
 
 const config = {
     baseURL: API_URL,
@@ -9,14 +11,23 @@ const config = {
     },
 };
 
-if(userInfo){
-    config['Authorization'] = 'Bearer '+userInfo.token;
-}
-
 /**
  Create instance axios with all the config
  */
 const api = axios.create(config);
+
+/**
+ intercept any request to api and ADD token to it.
+ **/
+api.interceptors.request.use(function (config) {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if(userInfo)
+        config.headers.Authorization = `Bearer ${userInfo.token}`;
+
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
 
 /**
  intercept any error responses from the api
@@ -28,12 +39,20 @@ const api = axios.create(config);
 
 api.interceptors.response.use(
     res => res,
-    err => {
-        if (err.response.status === 401) {
-            console.log("Token expired or Invalid token.")
-            // store.dispatch({ type: LOGOUT });
+    error => {
+        if(error.response.config.url !== "/auth/signup" && error.response.config.url !== "/auth/login"){
+            if(error.response && error.response.hasOwnProperty("data") &&
+                error.response.data.hasOwnProperty("message")){
+                store.dispatch(showError(error.response.data.message));
+            }
         }
-        return Promise.reject(err);
+
+        if (error.response.status === 401) {
+            console.log("Token expired or Invalid token.")
+            store.dispatch(logout());
+        }
+
+        return Promise.reject(error);
     }
 );
 

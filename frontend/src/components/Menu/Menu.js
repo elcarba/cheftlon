@@ -21,7 +21,7 @@ function Menu({ isOpen, onCloseClick, anchorEl, items }){
         >
             {
                 items.map((item, index) =>
-                    <MenuItem key={index} onClick={item.action}>{ item.label }</MenuItem>
+                    <MenuItem key={index} onClick={item.onAction}>{ item.label }</MenuItem>
                 )
             }
         </MenuCore>

@@ -6,7 +6,7 @@ import {
     Grid,
     Button,
     TextField,
-    makeStyles
+    makeStyles, Typography, Checkbox
 } from '@material-ui/core';
 import Alert from "../../components/Alert/Alert";
 
@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    roleGrid: {
+        margin: theme.spacing(1, 0, 0, -1)
+    }
 }));
 
 const UserForm = ({
@@ -26,7 +29,9 @@ const UserForm = ({
       initValues,
       onSubmitHandler,
       submitting,
-      error
+      error,
+      editing,
+      inAdmin
 }) =>
 {
     const classes = useStyles();
@@ -35,27 +40,59 @@ const UserForm = ({
         const defaultSchema = {
             email: Yup.string().email('Must be a valid email')
                 .max(255).required('Email is required'),
-            password: Yup.string()
-                .matches(
-                    new RegExp("^(?=.*[A-Z])(?=.{8,})"),
-                    'Password must contain 8 characters and at least 1 capital letter'
-                )
-                .required('Password is required'),
         };
 
         const cForm = {
             validations: defaultSchema
         };
 
-        if(type === 'signup'){
+        if(type !== 'login'){
             cForm.validations.name = Yup.string().max(255).required('Name is required');
+        }
+
+        if(editing){
+            cForm.validations.password = Yup.string()
+                .matches(
+                    new RegExp("^(?=.*[A-Z])(?=.{8,})"),
+                    'Password must contain 8 characters and at least 1 capital letter'
+                );
+        }else{
+            cForm.validations.password = Yup.string()
+                .matches(
+                    new RegExp("^(?=.*[A-Z])(?=.{8,})"),
+                    'Password must contain 8 characters and at least 1 capital letter'
+                )
+                .required('Password is required');
         }
 
         return cForm;
     };
 
+    const renderFooterForm = () => {
+        let footerForm = null;
+
+        if(type === 'login' || type === 'signup'){
+            footerForm = (
+                <Grid container justify="flex-end">
+                    <Grid item>
+                        <Link to={type === 'login' ? "signup":'login'}>
+                            {
+                                type === 'signup' ?
+                                    "Already have an account? Sign in":
+                                    "Don't have an account? Sign Up"
+                            }
+                        </Link>
+                    </Grid>
+                </Grid>
+            );
+        }
+
+        return footerForm;
+    };
+
     return (
         <Formik
+            enableReinitialize
             initialValues={initValues}
             validationSchema={
                 Yup.object().shape(checkType().validations)
@@ -76,7 +113,7 @@ const UserForm = ({
                 <form onSubmit={handleSubmit} className={classes.form}>
                     <Grid container spacing={2}>
                         {
-                            type === 'signup' ?
+                            type !== 'login' ?
                                 (
                                     <Grid item xs={12}>
                                         <TextField
@@ -108,6 +145,7 @@ const UserForm = ({
                                 type="email"
                                 value={values.email}
                                 variant="outlined"
+                                disabled={editing}
                             />
                         </Grid>
 
@@ -117,7 +155,7 @@ const UserForm = ({
                                 fullWidth
                                 helperText={touched.password && errors.password}
                                 label="Password"
-                                required
+                                required={!editing}
                                 name="password"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -127,6 +165,25 @@ const UserForm = ({
                             />
                         </Grid>
                     </Grid>
+
+                    {
+                        inAdmin && (
+                            <Grid item xs={12} className={classes.roleGrid}>
+                                <Checkbox
+                                    checked={values.isAdmin}
+                                    name="isAdmin"
+                                    onChange={handleChange}
+                                    color="primary"
+                                />
+                                <Typography
+                                    color="textSecondary"
+                                    variant="inherit"
+                                >
+                                    Admin?
+                                </Typography>
+                            </Grid>
+                        )
+                    }
 
                     <Button
                         color="primary"
@@ -150,17 +207,9 @@ const UserForm = ({
                         </>
                     }
 
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link to={type === 'login' ? "signup":'login'}>
-                                {
-                                    type === 'signup' ?
-                                        "Already have an account? Sign in":
-                                        "Don't have an account? Sign Up"
-                                }
-                            </Link>
-                        </Grid>
-                    </Grid>
+                    {
+                        renderFooterForm()
+                    }
                 </form>
             )}
         </Formik>

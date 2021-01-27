@@ -10,20 +10,29 @@ const useStyles = makeStyles({
 });
 
 function Navigation({ items }){
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const classes = useStyles();
 
     return(
         <List className={classes.list}>
             {
-                items.map((item, i) =>
-                    <React.Fragment key={i}>
-                        <NavigationItem
-                            title={item.title}
-                            href={item.href}
-                            icon={item.icon}
-                        />
-                    </React.Fragment>
-                )
+                items.map((item, i) => {
+                    let navItem = null;
+
+                    if((item.adminView && userInfo.isAdmin) || !item.adminView){
+                        navItem = (
+                            <React.Fragment key={i}>
+                                <NavigationItem
+                                    title={item.title}
+                                    onClickHandler={item.onAction}
+                                    icon={item.icon}
+                                />
+                            </React.Fragment>
+                        );
+                    }
+
+                    return navItem;
+                })
             }
         </List>
     );

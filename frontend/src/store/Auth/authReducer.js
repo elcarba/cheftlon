@@ -31,7 +31,8 @@ const authReducer = (state = initialState, action) => {
                 currentUser: action.payload.data,
                 loggedIn: true,
                 isLoading: false,
-                error: null
+                error: null,
+                rError: null,
             };
 
         case authActionTypes.LOGIN_FAILURE:
@@ -70,6 +71,31 @@ const authReducer = (state = initialState, action) => {
                 loggedIn: false,
                 isLoading: false,
                 error: null,
+            };
+
+        case authActionTypes.GET_PROFILE_REQUEST:
+        case authActionTypes.PROFILE_UPDATE_REQUEST:
+            return {
+                ...state,
+                isLoading: true,
+                error: null
+            };
+
+        case authActionTypes.GET_PROFILE_SUCCESS:
+        case authActionTypes.PROFILE_UPDATE_SUCCESS:
+            return {
+                ...state,
+                currentUser: action.payload.data,
+                isLoading: false,
+                error: null,
+            };
+
+        case authActionTypes.GET_PROFILE_FAILURE:
+        case authActionTypes.PROFILE_UPDATE_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+                isLoading: false,
             };
 
         default:

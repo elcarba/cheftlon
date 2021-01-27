@@ -6,11 +6,7 @@ import {
     ListItemText,
 } from '@material-ui/core';
 
-function NavigationItem({ title, href, icon }){
-    const onClickHandler = () => {
-        alert("history.push()" + href)
-    };
-
+function NavigationItem({ title, onClickHandler, icon }){
     return(
         <ListItem button onClick={onClickHandler}>
             <ListItemIcon> { icon } </ListItemIcon>
@@ -22,7 +18,7 @@ function NavigationItem({ title, href, icon }){
 
 
 NavigationItem.propTypes = {
-    href: PropTypes.string,
+    onClickHandler: PropTypes.func,
     icon: PropTypes.node,
     title: PropTypes.string
 };
