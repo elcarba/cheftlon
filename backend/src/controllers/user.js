@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require("../models/User");
 const { responseHandler } = require("../helpers/helper");
+const bcrypt = require("bcryptjs");
 
 exports.getUsers = asyncHandler(async (req, res) => {
     const users = await User.find({}).select("-password");
@@ -62,9 +63,65 @@ exports.updateUser = asyncHandler(async (req, res) => {
 
     if (user) {
         user.name = req.body.name || user.name;
-        user.isAdmin = req.body.isAdmin || user.isAdmin;
+        user.isAdmin = req.body.isAdmin;
+
+        if(req.body.password){
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(req.body.password, salt);
+        }
 
         const updatedUser = await user.save()
+
+        responseHandler(
+            res,
+            true,
+            200,
+            null,
+            formatUser(updatedUser)
+        );
+    } else {
+        responseHandler(
+            res,
+            false,
+            404,
+            'User not found',
+        );
+    }
+});
+
+exports.getUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+
+    if (user) {
+        responseHandler(
+            res,
+            true,
+            200,
+            null,
+            formatUser(user)
+        );
+    } else {
+        responseHandler(
+            res,
+            false,
+            404,
+            'User not found',
+        );
+    }
+});
+
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+
+    if (user) {
+        user.name = req.body.name || user.name;
+
+        if(req.body.password){
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(req.body.password, salt);
+        }
+
+        const updatedUser = await user.save();
 
         responseHandler(
             res,

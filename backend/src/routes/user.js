@@ -4,11 +4,18 @@ const {
     getUsers,
     deleteUser,
     getUserById,
-    updateUser
+    updateUser,
+    getUserProfile,
+    updateUserProfile
 } = require("../controllers/user");
 const { signup } = require("../controllers/auth");
 const { protect, admin } = require("../middlewares/auth");
-const { validateUser } = require('../validators/validator');
+const { validateUser, validateEditUser } = require('../validators/validator');
+
+router
+    .route('/profile')
+    .get(protect, getUserProfile)
+    .put(protect, validateEditUser, updateUserProfile)
 
 router.route("/")
     .get(protect, admin, getUsers)
@@ -18,6 +25,6 @@ router
     .route('/:id')
     .delete(protect, admin, deleteUser)
     .get(protect, admin, getUserById)
-    .put(protect, admin, updateUser);
+    .put(protect, admin, validateEditUser, updateUser);
 
 module.exports = router;

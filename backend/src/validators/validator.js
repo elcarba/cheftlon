@@ -14,11 +14,11 @@ validateResult = (req, res, next) => {
             valError[err.param] = err.msg;
         });
 
-        responseHandler(
+        return responseHandler(
             res,
             false,
             400,
-            "Some errors found:",
+            "Some errors found",
             valError
         );
     }
@@ -39,6 +39,14 @@ function checkEmailAndPwd(){
 exports.validateUser = [
     check("name").notEmpty().withMessage("It is mandatory to enter name"),
     checkEmailAndPwd(),
+    validateResult
+];
+
+exports.validateEditUser = [
+    check("name").notEmpty().withMessage("It is mandatory to enter name"),
+    check("password").if((value, { req }) => req.body.password && req.body.password !== '')
+        .matches(validRegex)
+        .withMessage("Password must be 8 characters and 1 capital letter"),
     validateResult
 ];
 
