@@ -17,11 +17,21 @@ class Profile extends React.Component {
     }
 
     onSubmitForm = (user) => {
+        //Append Avatar into req
+        if(this.props.user.avatarChanged)
+            user.avatar = this.props.user.avatar;
+        else
+            user.avatar = null;
+
         this.props.onUpdateProfile(user);
     };
 
     onChangeImage = (image) => {
-        console.log("IMAGE: ", image)
+        this.props.onChangeData({
+            ...this.props.user,
+            avatar: image,
+            avatarChanged: true
+        });
     };
 
     render(){
@@ -40,7 +50,11 @@ class Profile extends React.Component {
                         md={6}
                         xs={12}
                     >
-                        <UserInfo name={user && user.name} onUpload={this.onChangeImage} />
+                        <UserInfo
+                            picture={user.avatar}
+                            name={user.name}
+                            onUpload={this.onChangeImage}
+                        />
                     </Grid>
                     <Grid
                         item
@@ -78,6 +92,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onUpdateProfile: (user) => dispatch(actions.updateUserProfile(user)),
         onGetProfile: () => dispatch(actions.getUserProfile()),
+        onChangeData: (user) => dispatch(actions.changeData(user)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

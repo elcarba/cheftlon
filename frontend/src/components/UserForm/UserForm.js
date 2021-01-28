@@ -31,7 +31,8 @@ const UserForm = ({
       submitting,
       error,
       editing,
-      inAdmin
+      inAdmin,
+      isEnableReInit = false
 }) =>
 {
     const classes = useStyles();
@@ -92,7 +93,7 @@ const UserForm = ({
 
     return (
         <Formik
-            enableReinitialize
+            enableReinitialize={isEnableReInit}
             initialValues={initValues}
             validationSchema={
                 Yup.object().shape(checkType().validations)

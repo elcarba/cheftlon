@@ -22,8 +22,10 @@ const useStyles = makeStyles((theme) => ({
     },
     logoImg: {
         paddingRight: 6,
-        paddingLeft: 4,
+        paddingLeft: 2,
         marginTop: -8,
+        width: theme.spacing(4.5),
+        height: theme.spacing(4.5),
     }
 }));
 

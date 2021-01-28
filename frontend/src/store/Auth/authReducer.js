@@ -1,4 +1,5 @@
 import authActionTypes from './authTypes';
+import userActionTypes from "../User/userTypes";
 
 //Get User from LocalStorage
 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -96,6 +97,21 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload,
                 isLoading: false,
+            };
+
+        case authActionTypes.PROFILE_CHANGE_DATA:
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    _id: action.payload._id,
+                    name: action.payload.name,
+                    email: action.payload.email,
+                    password: '',
+                    isAdmin: action.payload.isAdmin,
+                    avatar: action.payload.avatar,
+                    avatarChanged: action.payload.avatarChanged,
+                },
             };
 
         default:

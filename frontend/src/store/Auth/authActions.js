@@ -104,6 +104,11 @@ export const updateUserProfile = (user) => async (dispatch) => {
             user
         );
 
+        //Upload avatar
+        if(user.avatar){
+            dispatch(uploadAvatar(user));
+        }
+
         //Refresh LS
         const oldInfo = JSON.parse(localStorage.getItem("userInfo"));
         //Remove old info and add new
@@ -131,3 +136,37 @@ export const updateUserProfile = (user) => async (dispatch) => {
         });
     }
 }
+
+export const uploadAvatar = (user) => async (dispatch) => {
+    try {
+        dispatch({
+            type: authActionTypes.UPLOAD_AVATAR_REQUEST,
+        });
+
+        const formData = new FormData();
+        formData.append('avatar', user.avatar);
+
+        const { data } = await api.put(
+            `/users/profile/upload-avatar`,
+            formData
+        );
+
+        dispatch({
+            type: authActionTypes.UPLOAD_AVATAR_SUCCESS,
+            payload: data,
+        });
+
+    } catch (error) {
+        dispatch({
+            type: authActionTypes.UPLOAD_AVATAR_FAILURE,
+            payload: handler.errorHandler(error),
+        });
+    }
+}
+
+export const changeData = (user) => {
+    return {
+        type: authActionTypes.PROFILE_CHANGE_DATA,
+        payload: user
+    }
+};

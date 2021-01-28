@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const User = require("../models/User");
 const { responseHandler } = require("../helpers/helper");
 const bcrypt = require("bcryptjs");
+const fs = require('fs');
 
 exports.getUsers = asyncHandler(async (req, res) => {
     const users = await User.find({}).select("-password");
@@ -38,7 +39,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 });
 
 exports.getUserById = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id).select('-password')
+    const user = await User.findById(req.params.id).select('-password');
 
     if (user) {
         responseHandler(
@@ -46,7 +47,7 @@ exports.getUserById = asyncHandler(async (req, res) => {
             true,
             200,
             null,
-            user
+            formatUser(user)
         );
     } else {
         responseHandler(
@@ -71,6 +72,36 @@ exports.updateUser = asyncHandler(async (req, res) => {
         }
 
         const updatedUser = await user.save()
+
+        responseHandler(
+            res,
+            true,
+            200,
+            null,
+            formatUser(updatedUser)
+        );
+    } else {
+        responseHandler(
+            res,
+            false,
+            404,
+            'User not found',
+        );
+    }
+});
+
+exports.uploadUserAvatar = asyncHandler(async (req, res) => {
+    const id = req.params.id ? req.params.id : req.user._id;
+    const user = await User.findById(id);
+
+    if (user) {
+        //Retrieve file
+        const file = req.file;
+
+        user.avatar.data = fs.readFileSync(file.path);
+        user.avatar.contentType = file.mimetype;
+
+        const updatedUser = await user.save();
 
         responseHandler(
             res,
@@ -141,10 +172,14 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 function formatUser(user){
+    const { avatar } = user;
     return {
         _id: user._id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+        avatar: avatar && avatar.data ?
+            `data:${avatar.contentType};base64,${Buffer.from(avatar.data)
+                .toString('base64')}` : null,
     };
 }

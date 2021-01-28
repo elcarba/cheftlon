@@ -6,7 +6,9 @@ const initialState = {
         name: '',
         email: '',
         password: '',
-        isAdmin: false
+        isAdmin: false,
+        avatar: null,
+        avatarChanged: false
     },
     isLoading: false,
     error: null,
@@ -33,6 +35,7 @@ const userReducer = (state = initialState, action) => {
                     password: action.payload.data.hasOwnProperty("password") ?
                         action.payload.data.password : '',
                     isAdmin: action.payload.data.isAdmin,
+                    avatar: action.payload.data.avatar,
                 },
                 isLoading: false,
                 retrievingUserError: null
@@ -65,6 +68,7 @@ const userReducer = (state = initialState, action) => {
                     password: action.payload.data.hasOwnProperty("password") ?
                         action.payload.data.password : '',
                     isAdmin: action.payload.data.isAdmin,
+                    avatar: action.payload.data.avatar,
                 },
                 isLoading: false,
                 error: null
@@ -102,7 +106,16 @@ const userReducer = (state = initialState, action) => {
         case userActionTypes.USER_CHANGE_DATA:
             return {
                 ...state,
-                user: action.payload,
+                user: {
+                    ...state.user,
+                    _id: action.payload._id,
+                    name: action.payload.name,
+                    email: action.payload.email,
+                    password: '',
+                    isAdmin: action.payload.isAdmin,
+                    avatar: action.payload.avatar,
+                    avatarChanged: action.payload.avatarChanged,
+                },
             };
 
         default:

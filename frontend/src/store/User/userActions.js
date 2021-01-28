@@ -19,6 +19,12 @@ export const createUser = (user) => async (dispatch) => {
             user
         );
 
+        if(user.avatar){
+            //After save user > upload avatar
+            user._id = data.data._id;
+            dispatch(uploadUserAvatar(user));
+        }
+
         //Show Alert
         dispatch(success(data.message));
 
@@ -45,6 +51,11 @@ export const updateUser = (user) => async (dispatch) => {
             `/users/${user._id}`,
             user
         );
+
+        if(user.avatar){
+            // Upload avatar
+            dispatch(uploadUserAvatar(user));
+        }
 
         //Show Alert
         dispatch(success(data.message));
@@ -91,15 +102,37 @@ export const deleteUser = (id) => async (dispatch) => {
     }
 }
 
-export const changeUserData = (user) => {
-    const userData = {
-        ...user,
-        password: '',
-    };
+export const uploadUserAvatar = (user) => async (dispatch) => {
+    try {
+        dispatch({
+            type: userActionTypes.USER_UPLOAD_AVATAR_REQUEST,
+        });
 
+        const formData = new FormData();
+        formData.append('avatar', user.avatar);
+
+        const { data } = await api.put(
+            `/users/${user._id}/upload-avatar`,
+            formData
+        );
+
+        dispatch({
+            type: userActionTypes.USER_UPLOAD_AVATAR_SUCCESS,
+            payload: data,
+        });
+
+    } catch (error) {
+        dispatch({
+            type: userActionTypes.USER_UPLOAD_AVATAR_FAILURE,
+            payload: handler.errorHandler(error),
+        });
+    }
+}
+
+export const changeUserData = (user) => {
     return {
         type: userActionTypes.USER_CHANGE_DATA,
-        payload: userData
+        payload: user
     }
 };
 

@@ -10,7 +10,7 @@ function errorHandler(error){
 function retrieveErrors(error){
     let str = "";
     for (const [key, value] of Object.entries(error)) {
-        str += `${key}: ${value} \n`
+        str += `${key}: ${value}. `
     }
 
     return str;

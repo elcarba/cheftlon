@@ -40,7 +40,9 @@ class CreateEditUser extends React.Component {
             name: '',
             email: '',
             password: '',
-            isAdmin: false
+            isAdmin: false,
+            avatar: null,
+            avatarChanged: false
         });
     };
 
@@ -50,6 +52,12 @@ class CreateEditUser extends React.Component {
     };
 
     onSubmitForm = (user) => {
+        //Append Avatar into req
+        if(this.props.user.avatarChanged)
+            user.avatar = this.props.user.avatar;
+        else
+            user.avatar = null;
+
         //Change User Data in redux
         this.props.onChangeUser(user);
 
@@ -61,7 +69,11 @@ class CreateEditUser extends React.Component {
     };
 
     onChangeImage = (image) => {
-        console.log("IMAGE: ", image)
+        this.props.onChangeUser({
+            ...this.props.user,
+            avatar: image,
+            avatarChanged: true
+        });
     };
 
     render(){
@@ -86,7 +98,11 @@ class CreateEditUser extends React.Component {
                         md={6}
                         xs={12}
                     >
-                        <UserInfo name={user.name} onUpload={this.onChangeImage} />
+                        <UserInfo
+                            picture={user.avatar}
+                            name={user.name}
+                            onUpload={this.onChangeImage}
+                        />
                     </Grid>
                     <Grid
                         item
@@ -104,6 +120,7 @@ class CreateEditUser extends React.Component {
                                 error={error}
                                 onSubmitHandler={this.onSubmitForm}
                                 inAdmin
+                                isEnableReInit={paramId && paramId !== ''}
                             />
                         </CustomPaper>
                     </Grid>
