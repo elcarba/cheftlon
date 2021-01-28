@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require("../models/User");
 const { responseHandler } = require("../helpers/helper");
+const { deleteFileMiddleware } = require("../middlewares/upload");
 const bcrypt = require("bcryptjs");
 const fs = require('fs');
 
@@ -102,6 +103,9 @@ exports.uploadUserAvatar = asyncHandler(async (req, res) => {
         user.avatar.contentType = file.mimetype;
 
         const updatedUser = await user.save();
+
+        //Delete image from fs
+        await deleteFileMiddleware(file.path);
 
         responseHandler(
             res,
