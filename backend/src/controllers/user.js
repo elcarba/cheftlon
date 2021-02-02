@@ -78,7 +78,7 @@ exports.updateUser = asyncHandler(async (req, res) => {
             res,
             true,
             200,
-            null,
+            'User updated successfully!',
             formatUser(updatedUser)
         );
     } else {
@@ -162,7 +162,7 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
             res,
             true,
             200,
-            null,
+            'Profile updated successfully!',
             formatUser(updatedUser)
         );
     } else {

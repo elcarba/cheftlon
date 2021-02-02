@@ -54,3 +54,9 @@ exports.validateLogin = [
     checkEmailAndPwd(),
     validateResult,
 ];
+
+exports.validateChef = [
+    check("name").notEmpty().withMessage("It is mandatory to enter name"),
+    check("country").notEmpty().withMessage("It is mandatory to enter country"),
+    validateResult
+];
