@@ -15,3 +15,7 @@ code {
 .back_link{
   vertical-align: bottom;
 }
+
+.text-center{
+  text-align: center;
+}

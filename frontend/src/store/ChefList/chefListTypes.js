@@ -1,0 +1,7 @@
+const actionTypes = {
+  GET_CHEFS_REQUEST: 'GET_CHEFS_REQUEST',
+  GET_CHEFS_SUCCESS: 'GET_CHEFS_SUCCESS',
+  GET_CHEFS_FAILURE: 'GET_CHEFS_FAILURE',
+};
+
+export default actionTypes;
