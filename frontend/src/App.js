@@ -12,6 +12,8 @@ import CreateEditUser from "./containers/Users/CreateEditUser";
 import NotFound from "./containers/NotFound/NotFound";
 import Profile from "./containers/Users/Profile";
 import Snackbar from "./components/Snackbar/Snackbar";
+import Chefs from "./containers/Chefs/Chefs";
+import CreateEditChef from "./containers/Chefs/CreateEditChef";
 
 const theme = createMuiTheme({
     palette: {
@@ -31,6 +33,9 @@ function App() {
                     <PrivateRoute exact path='/users' component={Users} adminRoute />
                     <PrivateRoute path='/users/new' component={CreateEditUser} adminRoute />
                     <PrivateRoute path='/users/:id/edit' component={CreateEditUser} adminRoute />
+                    <PrivateRoute exact path='/chefs' component={Chefs} adminRoute />
+                    <PrivateRoute path='/chefs/new' component={CreateEditChef} adminRoute />
+                    <PrivateRoute path='/chefs/:id/edit' component={CreateEditChef} adminRoute />
                     <PrivateRoute exact path='/' component={Home} />
                     <PrivateRoute exact path='/profile' component={Profile} />
                     <Route path='/signup' component={SignUp} />

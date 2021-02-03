@@ -3,53 +3,50 @@ import {connect} from 'react-redux';
 import CustomPaper from "../../components/CustomPaper/CustomPaper";
 import FloatingAddButton from "../../components/FloatingAddButton/FloatingAddButton";
 import Table from "../../components/Table/Table";
-import CheckIcon from '@material-ui/icons/Check';
-import { getUsers } from '../../store/UserList/userListActions';
-import { deleteUser } from '../../store/User/userActions';
+import { getChefs } from '../../store/ChefList/chefListActions';
+import { deleteChef } from '../../store/Chef/chefActions';
 import Loader from "../../components/Loader/Loader";
 import Modal from "../../components/Modal/Modal";
+import {Avatar} from "@material-ui/core";
 
-class Users extends React.Component {
+class Chefs extends React.Component {
     state = {
         modalOpen: false,
-        userIdSelected: null
+        chefIdSelected: null
     };
 
     componentDidMount(){
-        //Fetch All Users
-        this.props.onGetUsers();
+        //Fetch All Chefs
+        this.props.onGetChefs();
     }
 
-    onEditRow = (userId) => {
-        this.props.history.push(`/users/${userId}/edit`);
+    onEditRow = (chefId) => {
+        this.props.history.push(`/chefs/${chefId}/edit`);
     };
 
-    onDeleteRow = (userId) => {
+    onDeleteRow = (chefId) => {
         this.setState({
             ...this.state,
             modalOpen: true,
-            userIdSelected: userId
+            chefIdSelected: chefId
         });
     };
 
     onAddHandler = () => {
-       this.props.history.push("/users/new");
+       this.props.history.push("/chefs/new");
     };
 
-    handleDeleteUser = () => {
-        const { userIdSelected } = this.state;
-        this.props.onDeleteUser(userIdSelected);
+    handleDeleteChef = () => {
+        const { chefIdSelected } = this.state;
+        this.props.onDeleteChef(chefIdSelected);
     };
 
-    onRetrieveUsers = (users) => {
+    onRetrieveChefs = (chefs) => {
         /* Add custom rendering to cells */
-        return users.map((user) => {
-            if(user.isAdmin)
-                user.admin = <CheckIcon/>;
-            else
-                user.admin = '-';
-
-            return user;
+        return chefs.map((chef) => {
+            chef.image = <Avatar src={chef.imgUrl} alt={chef.name} />;
+            chef.bio = <p className="long-truncate">{ chef.biography }</p>;
+            return chef;
         });
     }
 
@@ -61,7 +58,7 @@ class Users extends React.Component {
     };
 
     renderTable = () => {
-        const { users } = this.props;
+        const { chefs } = this.props;
         return <Table
             withActions={{
                 onEditClick: this.onEditRow,
@@ -69,10 +66,13 @@ class Users extends React.Component {
             }}
             rowsHead={{
                 name: "Name",
-                email: "Email",
-                admin: "Admin"
+                image: "Image",
+                bio: "Biography",
+                country: "Country",
+                sumScore: "Rating",
+                totalScore: "Total Ratings",
             }}
-            rowsBody={this.onRetrieveUsers(users)}
+            rowsBody={this.onRetrieveChefs(chefs)}
         />;
     };
 
@@ -80,7 +80,7 @@ class Users extends React.Component {
         return (
             <>
                 <Loader isLoading={this.props.isLoading} />
-                <CustomPaper title={"Users"}>
+                <CustomPaper title={"Chefs"}>
                     { this.renderTable() }
                 </CustomPaper>
 
@@ -90,7 +90,7 @@ class Users extends React.Component {
                     onClose={this.handleCloseModal}
                     title={"Attention!"}
                     description={"Are you sure you want to delete?"}
-                    onProceed={this.handleDeleteUser}
+                    onProceed={this.handleDeleteChef}
                     onProceedLabel="Yes"
                 />
             </>
@@ -100,15 +100,15 @@ class Users extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: state.userListReducer.users,
-        isLoading: state.userListReducer.isLoading,
+        chefs: state.chefListReducer.chefs,
+        isLoading: state.chefListReducer.isLoading,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onGetUsers: () => dispatch(getUsers()),
-        onDeleteUser: (id) => dispatch(deleteUser(id))
+        onGetChefs: () => dispatch(getChefs()),
+        onDeleteChef: (id) => dispatch(deleteChef(id))
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default connect(mapStateToProps, mapDispatchToProps)(Chefs);

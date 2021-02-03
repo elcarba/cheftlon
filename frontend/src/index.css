@@ -19,3 +19,10 @@ code {
 .text-center{
   text-align: center;
 }
+
+.long-truncate{
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

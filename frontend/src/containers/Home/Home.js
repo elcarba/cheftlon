@@ -3,6 +3,7 @@ import {Box, Divider, Grid, Typography} from "@material-ui/core";
 import {getChefs} from "../../store/ChefList/chefListActions";
 import {connect} from "react-redux";
 import ChefCard from "../../components/ChefCard/ChefCard";
+import Loader from "../../components/Loader/Loader";
 
 class Home extends Component {
     componentDidMount(){
@@ -40,6 +41,7 @@ class Home extends Component {
     render() {
         return (
             <>
+                <Loader isLoading={this.props.isLoading} />
                 <Typography className="text-center" gutterBottom variant="h4" color="textPrimary">
                     Popular Chefs around the world
                 </Typography>

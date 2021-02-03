@@ -2,8 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import DrawerCore from '@material-ui/core/Drawer';
 import Navigation from '../Navigation/Navigation';
-import PeopleIcon from "@material-ui/icons/People";
-import HomeIcon from "@material-ui/icons/Home";
+import { People, Home, Kitchen } from "@material-ui/icons";
 import {Avatar, Divider, IconButton, Typography} from "@material-ui/core";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {makeStyles} from "@material-ui/core/styles";
@@ -45,13 +44,19 @@ export default function Drawer({ isOpen, onCloseClick }) {
             {
                 title: 'Home',
                 onAction: () => goTo('/'),
-                icon:  <HomeIcon />,
+                icon:  <Home />,
                 adminView: false
             },
             {
                 title: 'Users',
                 onAction: () => goTo('/users'),
-                icon:  <PeopleIcon />,
+                icon:  <People />,
+                adminView: true
+            },
+            {
+                title: 'Chefs',
+                onAction: () => goTo('/chefs'),
+                icon:  <Kitchen />,
                 adminView: true
             },
         ];
