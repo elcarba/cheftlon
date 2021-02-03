@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Card, CardContent, CardMedia, IconButton, Typography} from "@material-ui/core";
+import {Avatar, Card, CardContent, CardMedia, Hidden, IconButton, Typography} from "@material-ui/core";
 import {Rating} from "@material-ui/lab";
 import {Flag, Star} from "@material-ui/icons";
 import ImgDefault from '../../assets/images/default-img.png';
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: 200,
         maxWidth: 400,
         overflow: 'auto',
-        position: 'relative'
+        position: 'relative',
     },
     cover: {
         width: 251,
@@ -41,6 +41,16 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         right: 10
     },
+    avatar: {
+        width: theme.spacing(10),
+        height: theme.spacing(10),
+        margin: theme.spacing("auto", "auto", 1, "auto"),
+    },
+    title: {
+        [theme.breakpoints.down('xs')]: {
+            textAlign: 'center',
+        },
+    }
 }));
 
 export default function ChefCard({ name, biography, imgUrl, country, sumScore, totalScore }) {
@@ -49,7 +59,10 @@ export default function ChefCard({ name, biography, imgUrl, country, sumScore, t
         <Card className={classes.root}>
             <div className={classes.details}>
                 <CardContent className={classes.content}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Hidden smUp>
+                        <Avatar className={classes.avatar} src={imgUrl} alt={name} />
+                    </Hidden>
+                    <Typography className={classes.title} gutterBottom variant="h5" component="h2">
                         { name }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
@@ -80,11 +93,13 @@ export default function ChefCard({ name, biography, imgUrl, country, sumScore, t
                 </div>
             </div>
 
-            <CardMedia
-                className={classes.cover}
-                image={imgUrl ? imgUrl : ImgDefault}
-                title={name}
-            />
+            <Hidden xsDown>
+                <CardMedia
+                    className={classes.cover}
+                    image={imgUrl ? imgUrl : ImgDefault}
+                    title={name}
+                />
+            </Hidden>
         </Card>
     );
 }
