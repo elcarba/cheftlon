@@ -1,14 +1,41 @@
 import React, { Component } from 'react';
-import {Box, Divider, Typography} from "@material-ui/core";
-import CardList from "../../components/CardList/CardList";
+import {Box, Divider, Grid, Typography} from "@material-ui/core";
 import {getChefs} from "../../store/ChefList/chefListActions";
 import {connect} from "react-redux";
+import ChefCard from "../../components/ChefCard/ChefCard";
 
 class Home extends Component {
     componentDidMount(){
         //Fetch All Chefs
         this.props.onGetChefs();
     }
+
+    renderGridCard = () => {
+        const { chefs } = this.props;
+        return (
+            <Grid
+                container
+                spacing={3}
+            >
+                {
+                    chefs.map((chef, i) => {
+                        return(
+                            <Grid
+                                item
+                                lg={6}
+                                md={6}
+                                xs={12}
+                                key={i}
+                            >
+                                <ChefCard {...chef} />
+                            </Grid>
+                        );
+                    })
+                }
+
+            </Grid>
+        );
+    };
 
     render() {
         return (
@@ -19,7 +46,7 @@ class Home extends Component {
                 <Divider />
                 <br/>
                 <Box mt={3}>
-                    <CardList list={this.props.chefs}/>
+                    { this.renderGridCard() }
                 </Box>
             </>
         )

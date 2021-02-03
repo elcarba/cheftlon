@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Card, CardContent, CardMedia, IconButton, Typography} from "@material-ui/core";
 import {Rating} from "@material-ui/lab";
 import {Flag, Star} from "@material-ui/icons";
-import ImgDefault from '../../../assets/images/default-img.png';
+import ImgDefault from '../../assets/images/default-img.png';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CardItem({ name, biography, imgUrl, country, sumScore, totalScore }) {
+export default function ChefCard({ name, biography, imgUrl, country, sumScore, totalScore }) {
     const classes = useStyles();
     return (
         <Card className={classes.root}>
