@@ -96,3 +96,29 @@ exports.updateChef = asyncHandler(async (req, res) => {
         );
     }
 });
+
+exports.rateChef = asyncHandler(async (req, res) => {
+    const chef = await Chef.findById(req.params.id)
+
+    if (chef) {
+        chef.sumScore += req.body.rate;
+        chef.totalScore += 1;
+
+        const updatedChef = await chef.save()
+
+        responseHandler(
+            res,
+            true,
+            200,
+            'Chef rated successfully!',
+            updatedChef
+        );
+    } else {
+        responseHandler(
+            res,
+            false,
+            404,
+            'Chef not found',
+        );
+    }
+});

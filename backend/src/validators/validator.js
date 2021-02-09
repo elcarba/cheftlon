@@ -60,3 +60,9 @@ exports.validateChef = [
     check("country").notEmpty().withMessage("It is mandatory to enter country"),
     validateResult
 ];
+
+exports.validateChefToRate = [
+    check("rate").isInt().withMessage("It is mandatory to enter valid number to rate")
+        .isLength({ min: 0, max: 5 }).withMessage("Rate should be a number between 0 and 5"),
+    validateResult
+];
