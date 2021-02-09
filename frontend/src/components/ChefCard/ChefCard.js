@@ -33,8 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
     footer: {
         display: 'flex',
-        paddingLeft: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
+        padding: theme.spacing(2),
         position: 'relative'
     },
     rating: {
@@ -81,7 +80,7 @@ export default function ChefCard({ name, biography, imgUrl, country, sumScore, t
 
                 <div className={classes.footer} >
                     <div className={classes.rating}>
-                        <Rating name="read-only" value={sumScore} readOnly />
+                        <Rating name="read-only" value={sumScore > 0 ? sumScore / totalScore : 0} readOnly />
                         <Typography variant="body2" color="textSecondary">
                             { totalScore } global ratings
                         </Typography>

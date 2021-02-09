@@ -46,6 +46,7 @@ class Chefs extends React.Component {
         return chefs.map((chef) => {
             chef.image = <Avatar src={chef.imgUrl} alt={chef.name} />;
             chef.bio = <p className="long-truncate">{ chef.biography }</p>;
+            chef.rating = chef.sumScore > 0 ? chef.sumScore / chef.totalScore : 0;
             return chef;
         });
     }
@@ -69,7 +70,7 @@ class Chefs extends React.Component {
                 image: "Image",
                 bio: "Biography",
                 country: "Country",
-                sumScore: "Rating",
+                rating: "Rating",
                 totalScore: "Total Ratings",
             }}
             rowsBody={this.onRetrieveChefs(chefs)}

@@ -4,12 +4,28 @@ import {getChefs} from "../../store/ChefList/chefListActions";
 import {connect} from "react-redux";
 import ChefCard from "../../components/ChefCard/ChefCard";
 import Loader from "../../components/Loader/Loader";
+import ModalScreen from "../../components/Modal/ModalScreen/ModalScreen";
+import RateChef from "../../components/RateChef/RateChef";
+import {rateChef} from "../../store/Chef/chefActions";
 
 class Home extends Component {
+    state = {
+        modalOpen: false,
+        ratingChef: null
+    };
+
     componentDidMount(){
         //Fetch All Chefs
         this.props.onGetChefs();
     }
+
+    onRateChef = (chef) => {
+        this.setState({
+            ...this.state,
+            modalOpen: true,
+            ratingChef: chef
+        });
+    };
 
     renderGridCard = () => {
         const { chefs } = this.props;
@@ -28,7 +44,10 @@ class Home extends Component {
                                 xs={12}
                                 key={i}
                             >
-                                <ChefCard {...chef} />
+                                <ChefCard
+                                    {...chef}
+                                    onStarClick={() => this.onRateChef(chef)}
+                                />
                             </Grid>
                         );
                     })
@@ -36,6 +55,18 @@ class Home extends Component {
 
             </Grid>
         );
+    };
+
+    handleCloseModal = () => {
+        this.setState({
+            ...this.state,
+            modalOpen: false
+        });
+    };
+
+    handleRatingChef = (rateVal) => {
+        this.handleCloseModal();
+        this.props.onRateChef(this.state.ratingChef._id, rateVal);
     };
 
     render() {
@@ -50,6 +81,17 @@ class Home extends Component {
                 <Box mt={3}>
                     { this.renderGridCard() }
                 </Box>
+                <ModalScreen
+                    open={this.state.modalOpen}
+                    onClose={this.handleCloseModal}
+                    title={"Rate your chef"}
+                    content={
+                        <RateChef
+                            { ...this.state.ratingChef }
+                            onRateChange={this.handleRatingChef}
+                        />
+                    }
+                />
             </>
         )
     };
@@ -65,6 +107,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onGetChefs: () => dispatch(getChefs()),
+        onRateChef: (id, val) => dispatch(rateChef(id, val)),
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -154,6 +154,47 @@ const ChefForm = ({
 
                         </Grid>
 
+                        <Grid item xs={12}>
+                            <TextField
+                                error={Boolean(touched.sumScore && errors.sumScore)}
+                                fullWidth
+                                helperText={touched.sumScore && errors.sumScore}
+                                label="SumScore"
+                                name="sumScore"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.sumScore}
+                                variant="outlined"
+                                type="number"
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                error={Boolean(touched.totalScore && errors.totalScore)}
+                                fullWidth
+                                helperText={touched.totalScore && errors.totalScore}
+                                label="TotalScore"
+                                name="totalScore"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.totalScore}
+                                variant="outlined"
+                                type="number"
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Rating"
+                                name="rating"
+                                disabled
+                                value={values.sumScore > 0 ? values.sumScore / values.totalScore : 0}
+                                variant="outlined"
+                            />
+                        </Grid>
+
                         <Grid item xs={1}>
                             <Avatar className={classes.avatar} src={values.imgUrl} alt={values.name}/>
                         </Grid>

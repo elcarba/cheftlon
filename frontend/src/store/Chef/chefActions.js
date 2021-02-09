@@ -120,3 +120,25 @@ export const getChef = (chefId) => async (dispatch) => {
         })
     }
 }
+
+export const rateChef = (chefId, value) => async (dispatch) => {
+    try {
+        dispatch({
+            type: chefActionTypes.RATE_CHEF_REQUEST,
+        });
+
+        const { data } = await api.put(
+            `/chefs/${chefId}/rate`,
+            { rate: value }
+        );
+
+        //Show Alert
+        dispatch(success(data.message));
+
+        //Reload Chefs
+        dispatch(getChefs());
+
+    } catch (error) {
+        console.log(error);
+    }
+}
