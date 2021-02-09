@@ -77,6 +77,8 @@ exports.updateChef = asyncHandler(async (req, res) => {
         chef.imgUrl = req.body.imgUrl;
         chef.biography = req.body.biography;
         chef.country = req.body.country;
+        chef.sumScore = req.body.sumScore || chef.sumScore;
+        chef.totalScore = req.body.totalScore || chef.totalScore;
 
         const updatedChef = await chef.save()
 
