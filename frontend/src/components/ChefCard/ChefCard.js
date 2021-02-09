@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Avatar, Card, CardContent, CardMedia, Hidden, IconButton, Typography} from "@material-ui/core";
+import {Avatar, Card, CardContent, CardHeader, CardMedia, Hidden, IconButton, Typography} from "@material-ui/core";
 import {Rating} from "@material-ui/lab";
 import {Flag, Star} from "@material-ui/icons";
 import ImgDefault from '../../assets/images/default-img.png';
@@ -8,28 +8,31 @@ import ImgDefault from '../../assets/images/default-img.png';
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 545,
-        maxHeight: 245,
+        maxHeight: 300,
         display: 'flex',
         margin: theme.spacing('auto', 'auto', 2 , 'auto'),
+    },
+    header: {
+        paddingBottom: 0
     },
     details: {
         display: 'flex',
         flexDirection: 'column',
     },
     content: {
-        minHeight: 100,
-        minWidth: 320,
+        minHeight: 110,
+        minWidth: 262,
         maxHeight: 200,
         maxWidth: 400,
         overflow: 'auto',
         position: 'relative',
+        paddingTop: 0
     },
     cover: {
         width: 251,
     },
     footer: {
         display: 'flex',
-        flexDirection: 'column',
         paddingLeft: theme.spacing(1),
         paddingBottom: theme.spacing(1),
         position: 'relative'
@@ -42,30 +45,36 @@ const useStyles = makeStyles((theme) => ({
         right: 10
     },
     avatar: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
-        margin: theme.spacing("auto", "auto", 1, "auto"),
+        width: theme.spacing(8),
+        height: theme.spacing(8),
+        margin: theme.spacing("auto", "auto", 2, "auto"),
     },
-    title: {
-        [theme.breakpoints.down('xs')]: {
-            textAlign: 'center',
-        },
-    }
 }));
 
-export default function ChefCard({ name, biography, imgUrl, country, sumScore, totalScore }) {
+export default function ChefCard({ name, biography, imgUrl, country, sumScore, totalScore, onStarClick }) {
     const classes = useStyles();
     return (
         <Card className={classes.root}>
             <div className={classes.details}>
+                <CardHeader
+                    className={classes.header}
+                    title={
+                        <Typography gutterBottom variant="h5" component="h2">
+                            { name }
+                        </Typography>
+                    }
+                    avatar={
+                        <Hidden smUp>
+                            <Avatar className={classes.avatar} src={imgUrl} alt={name} />
+                        </Hidden>
+                    }
+                />
                 <CardContent className={classes.content}>
-                    <Hidden smUp>
-                        <Avatar className={classes.avatar} src={imgUrl} alt={name} />
-                    </Hidden>
-                    <Typography className={classes.title} gutterBottom variant="h5" component="h2">
-                        { name }
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                    >
                         { biography }
                     </Typography>
                 </CardContent>
@@ -86,7 +95,7 @@ export default function ChefCard({ name, biography, imgUrl, country, sumScore, t
                             </Typography>
                         </IconButton>
 
-                        <IconButton aria-label="play/pause" className={classes.rate}>
+                        <IconButton aria-label="play/pause" className={classes.rate} onClick={onStarClick}>
                             <Star />
                         </IconButton>
                     </div>
