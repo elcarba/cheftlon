@@ -52,7 +52,7 @@ class Profile extends React.Component {
                     >
                         <UserInfo
                             picture={user && user.avatar}
-                            name={user.name}
+                            name={user && user.name}
                             onUpload={this.onChangeImage}
                         />
                     </Grid>
