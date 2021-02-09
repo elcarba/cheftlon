@@ -53,6 +53,18 @@ const Login = () => {
                     <strong>Sign In</strong>
                 </Typography>
 
+                <Typography component="h1" variant="overline">
+                    <strong>Demo credentials:</strong>
+                </Typography>
+
+                <Typography component="h1" variant="caption" color="textSecondary">
+                    Email: demo@demo.com
+                </Typography>
+
+                <Typography component="h1" variant="caption" color="textSecondary">
+                    Password: 12345678D
+                </Typography>
+
                 <UserForm
                     initValues={initVal}
                     type={'login'}
