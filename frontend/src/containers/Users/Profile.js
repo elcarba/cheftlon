@@ -51,7 +51,7 @@ class Profile extends React.Component {
                         xs={12}
                     >
                         <UserInfo
-                            picture={user.avatar}
+                            picture={user && user.avatar}
                             name={user.name}
                             onUpload={this.onChangeImage}
                         />
